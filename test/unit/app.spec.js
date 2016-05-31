@@ -122,47 +122,35 @@ describe('app', function () {
         });
 
         describe('and.returnValue', function () {
-            var wynik;
-            beforeAll(function (){
-                spyOn(app, 'isPalindrome').and.returnValue(false);
+            var returns;
+            beforeAll(function () {
+                spyOn(app, 'vowelCount').and.returnValue(1);
             });
-            it('should call isPalindrome function and return false', function() {
-                wynik = app.isPalindrome('anna');
-                expect(wynik).toBe(false);
+            it('should call generateMessage and return values 1 and true', function () {
+                returns = app.generateMessage('mam');
+                expect(returns).toEqual({vowel: 1, palindrome: true});
             });
-            it('should call generateMessage and isPalindrome functions, result should be equal false', function() {
-                wynik = app.generateMessage('anna');
-                expect(wynik).toEqual({vowel: 2, palindrome: false});
+            it('should call vowelCount and return 1', function () {
+                returns = app.vowelCount('mam');
+                expect(returns).toEqual(1);
             });
         });
 
         describe('and.callFake', function () {
-            var pal;
             beforeAll(function () {
-                spyOn(app, 'isPalindrome').and.callFake(function (str) {
-                    var strTemp = str.toLowerCase(),
-                        strLength = strTemp.length;
-                    if (str === '') {
-                        return true;
-                    }
-                    var halfLength = (strLength % 2 === 0) ? (strLength / 2) : ((strLength - 1) / 2);
-                    for (var i = 0; i < halfLength; i++) {
-                        if (strTemp[i] !== strTemp.slice(-1 - i)[0]) {
-                            return true;
-                        }
-                    }
-                    return false;
+                spyOn(app, 'vowelCount').and.callFake(function () {
+                    return 'test';
                 });
             });
-            it('should call isPalindrome fake function', function () {
-                pal = app.isPalindrome("mam");
-                expect(pal).toBe(false);
+            it('should call vowelCount fake function', function () {
+                expect(app.vowelCount('javascript')).toEqual('test');
             });
-            it('should call generateMessage and isPalindrome fake function', function () {
-                pal = app.generateMessage("mam");
-                expect(pal).toEqual({vowel: 1, palindrome: false});
+            it('should call vowelCount and generateMessage fake function', function () {
+                expect(app.generateMessage('ada')).toEqual({vowel: 'test', palindrome: true});
             });
         });
+
+
 
         describe('calls.count()', function () {
             var vow;
